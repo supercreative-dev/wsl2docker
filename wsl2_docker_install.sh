@@ -1,11 +1,5 @@
 #!/bin/sh
 
-sudo tee -a /etc/wsl.conf > /dev/null <<EOT
-#[network]
-#generateResolvConf = false
-[boot]
-command = service docker start
-EOT
 sudo apt-get update -y
 sudo apt-get upgrade -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
@@ -28,4 +22,15 @@ sudo usermod -aG docker $USER
 # 그룹 등록 후 터미널 껐다 켜야 적용됨. (docker.sock permission denied 관련 이슈)
 
 #wsl 2인경우
+sudo tee -a /etc/docker/daemon.conf > /dev/null <<EOT
+{"hosts": ["tcp://127.0.0.1:2375", "unix:///var/run/docker.sock"]}
+EOT
+
+sudo tee -a /etc/wsl.conf > /dev/null <<EOT
+#[network]
+#generateResolvConf = false
+[boot]
+command = service docker start
+EOT
+
 sudo service docker start
