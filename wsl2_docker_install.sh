@@ -22,6 +22,7 @@ sudo usermod -aG docker $USER
 # 그룹 등록 후 터미널 껐다 켜야 적용됨. (docker.sock permission denied 관련 이슈)
 
 #wsl 2인경우
+sudo mkdir -p /etc/docker/
 sudo tee -a /etc/docker/daemon.conf > /dev/null <<EOT
 {"hosts": ["tcp://127.0.0.1:2375", "unix:///var/run/docker.sock"]}
 EOT
