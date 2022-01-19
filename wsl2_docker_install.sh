@@ -23,7 +23,7 @@ sudo usermod -aG docker $USER
 
 #wsl 2인경우
 sudo mkdir -p /etc/docker/
-sudo tee -a /etc/docker/daemon.conf > /dev/null <<EOT
+sudo tee -a /etc/docker/daemon.json > /dev/null <<EOT
 {"hosts": ["tcp://127.0.0.1:2375", "unix:///var/run/docker.sock"]}
 EOT
 
