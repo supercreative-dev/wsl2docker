@@ -28,12 +28,15 @@ sudo tee /etc/docker/daemon.json > /dev/null <<EOT
 {"insecure-registries" : ["10.10.10.7:5443:,"nas:5443","nas.supercreative.kr:5443"]}
 EOT
 
-#wsl 2인경우
+if [ -d /run/WSL ]; then
+
+#wsl인경우
 sudo tee /etc/wsl.conf > /dev/null <<EOT
 #[network]
 #generateResolvConf = false
 [boot]
 command = service docker start
 EOT
-
 sudo service docker start
+
+fi
