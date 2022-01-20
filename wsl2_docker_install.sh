@@ -24,13 +24,15 @@ sudo usermod -aG docker $USER
 
 
 sudo mkdir -p /etc/docker/
-sudo tee /etc/docker/daemon.json > /dev/null <<EOT
-{"insecure-registries" : ["10.10.10.7:5443","nas:5443","nas.supercreative.kr:5443"]}
-EOT
+
 
 if [ -d /run/WSL ]; then
 
 #wsl인경우
+sudo tee /etc/docker/daemon.json > /dev/null <<EOT
+{"insecure-registries" : ["10.10.10.7:5443","nas:5443","nas.supercreative.kr:5443"]}
+EOT
+
 sudo tee /etc/wsl.conf > /dev/null <<EOT
 #[network]
 #generateResolvConf = false
@@ -39,6 +41,11 @@ command = service docker start
 EOT
 sudo service docker start
 else
-sudo systemctl enable docker.service
-sudo service docker start
+
+sudo tee /etc/docker/daemon.json > /dev/null <<EOT
+{"exec-opts": ["native.cgroupdriver=systemd"],"insecure-registries" : ["10.10.10.7:5443","nas:5443","nas.supercreative.kr:5443"]}
+EOT
+sudo systemctl enable docker
+sudo systemctl daemon-reload
+sudo systemctl restart docker
 fi
