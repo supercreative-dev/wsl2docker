@@ -21,17 +21,3 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo usermod -aG docker $USER
 # 그룹 등록 후 터미널 껐다 켜야 적용됨. (docker.sock permission denied 관련 이슈)
 
-#wsl 2인경우
-sudo mkdir -p /etc/docker/
-sudo tee /etc/docker/daemon.json > /dev/null <<EOT
-{"hosts": ["tcp://127.0.0.1:2375", "unix:///var/run/docker.sock"]}
-EOT
-
-sudo tee /etc/wsl.conf > /dev/null <<EOT
-#[network]
-#generateResolvConf = false
-[boot]
-command = service docker start
-EOT
-
-sudo service docker start
