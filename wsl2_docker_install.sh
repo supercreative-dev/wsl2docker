@@ -25,7 +25,7 @@ sudo usermod -aG docker $USER
 
 sudo mkdir -p /etc/docker/
 sudo tee /etc/docker/daemon.json > /dev/null <<EOT
-{"insecure-registries" : ["10.10.10.7:5443:,"nas:5443","nas.supercreative.kr:5443"]}
+{"insecure-registries" : ["10.10.10.7:5443","nas:5443","nas.supercreative.kr:5443"]}
 EOT
 
 if [ -d /run/WSL ]; then
@@ -38,5 +38,7 @@ sudo tee /etc/wsl.conf > /dev/null <<EOT
 command = service docker start
 EOT
 sudo service docker start
-
+else
+sudo systemctl enable docker.service
+sudo service docker start
 fi
